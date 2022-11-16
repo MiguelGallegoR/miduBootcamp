@@ -10,8 +10,9 @@ export default function Suma({parameters}){
     */
     const {parts} = parameters;
     const addParameters = () =>{
-        console.log(parameters);
-       let total = parts.reduce(function(acc, current) { return acc + current.exerciseCount}, 0);
+        
+       let total = parts.reduce(function(acc, current) { 
+        return acc + current.exercises}, 0);
         setAddition(total)
     }
 
@@ -19,5 +20,5 @@ export default function Suma({parameters}){
         addParameters();
     }, [parameters])
 
-    return(<p> El resultado es : {addition}</p> )
+    return(<strong> Total of exercises : {addition}</strong> )
 }

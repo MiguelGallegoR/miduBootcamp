@@ -1,39 +1,60 @@
-import Suma from "./Suma"
-
-const Header = (props) => {
-  return <h1>{props.name}</h1>
-}
-
-const Content = (props)=>{
-  return <p>{props.title} : {props.exercise}</p>
-}
-
+import {Course} from "./Course"
 
 
 const App = () => {
-  const course = {
-    name: "Half Stack app development Miguel con Midu",
-    parts: [
-      {
-        title: "Fundamentals of React",
-        exerciseCount: 10
-      },
-      {
-        title: "Using props to pass data",
-        exerciseCount: 7
-      },
-      {
-        title: "State of a component",
-        exerciseCount: 14
-      },
-    ]
-  }
+ 
+  const courses = [
+    {
+      name: 'Half Stack application development',
+      id: 1,
+      parts: [
+        {
+          name: 'Fundamentals of React',
+          exercises: 10,
+          id: 1
+        },
+        {
+          name: 'Using props to pass data',
+          exercises: 7,
+          id: 2
+        },
+        {
+          name: 'State of a component',
+          exercises: 14,
+          id: 3
+        },
+        {
+          name: 'Redux',
+          exercises: 11,
+          id: 4
+        }
+      ]
+    }, 
+    {
+      name: 'Node.js',
+      id: 2,
+      parts: [
+        {
+          name: 'Routing',
+          exercises: 3,
+          id: 1
+        },
+        {
+          name: 'Middlewares',
+          exercises: 7,
+          id: 2
+        }
+      ]
+    }
+  ]
+  let listCourses = courses.map((course)=>{
+    return <Course key={course.id} course={course} />
+  })
   
   return (
     <div>
-      <Header name = {course.name} />
-      {course.parts.map( item => <Content key={item.title} title={item.title} exercise={item.exerciseCount} />)}
-      <Suma parameters={course} /> 
+      {listCourses}
+      
       
     </div>
   )
