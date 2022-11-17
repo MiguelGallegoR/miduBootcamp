@@ -1,68 +1,79 @@
 import { useState } from 'react'
+import { Contacts } from './Contacts'
+import { Add } from './Add'
+import { Filter } from './Filter'
 
 const App = () => {
   const [persons, setPersons] = useState([
-    { name: 'Arto Hellas' }
+    { name: 'Arto Hellas', number: '040-123456', id: 1 },
+    { name: 'Ada Lovelace', number: '39-44-5323523', id: 2 },
+    { name: 'Dan Abramov', number: '12-43-234345', id: 3 },
+    { name: 'Mary Poppendieck', number: '39-23-6423122', id: 4 }
   ]) 
   const [newName, setNewName] = useState('')
+  const [phone, setPhone] = useState('')
+  const [result, setResult] = useState('');
   
 
-  const handleChange = (event) =>{
+  const handleChangeName = (event) =>{
       setNewName(event.target.value)
+      
   }
+
+  const handleChangePhone = (event) => {
+    setPhone(event.target.value)
+  }
+
+  const handleChangeResult = (event) =>{
+    
+    setResult(event.target.value)
+    
+  }
+   
 
   const handleSubmit = (event) => {
-    event.preventDefault();
-    console.log(newName);
-    let newPersonToState = ({
-      name: newName
-    })
-    
-    let alreadyBooked = persons.map((person)=>{
-      //console.log(JSON.stringify(person) === JSON.stringify(newPersonToState));
-      if(JSON.stringify(person) !== JSON.stringify(newPersonToState)){
-        setPersons([
-          ...persons,
-          newPersonToState]);
-          return false
-      }
-       return true
-    })  
-    
-    alreadyBooked.map((p)=>{
-      if(p){
-        alert(`${newName} already added on the phonebook`)
-        setPersons(persons)
-      }
-    })
-    
-    setNewName('');
+        event.preventDefault();
+       
+        let newPersonToState = ({
+          name: newName,
+          number: phone,
+          id: persons.length+1
+        })
+        
+        let alreadyBooked = persons.map((person)=>{
+          let found = persons.find(person => person.name === newPersonToState.name)
+          if(found === undefined){
+            setPersons( prevState => [
+              ...persons,
+              newPersonToState]);
+              return false
+          }
+          return true
+        })  
+        
+        alreadyBooked.forEach((p)=>{
+          if(p){
+            alert(`${newName} already added on the phonebook`)
+            setPersons(persons)
+            
+          }
+        })
+        
+        setNewName('');
+        setPhone('');
   }
 
- console.log(persons)
-
-  let listOfPersons = persons.map((person)=>{
-    return <p key={person.name} >{person.name}</p>
-  })  
-
-
+ 
   return (
     <div>
       <h2>Phonebook</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          name: <input onChange={handleChange} value={newName} />
-          
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
-      <div>
-        {listOfPersons}
-      </div>
+
+        <Filter persons ={persons} changeResult = {handleChangeResult} result ={result}  />
+
+        <Add submit={handleSubmit} changeName={handleChangeName} changePhone={handleChangePhone} newName={newName} phone={phone} />
       
       <h2>Numbers</h2>
+      <Contacts persons={persons} />
       
     </div>
   )
